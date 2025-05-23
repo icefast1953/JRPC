@@ -1,14 +1,27 @@
 package org.example.Server.provider;
 
+import org.example.Server.serviceRegister.Impl.ZKServiceRegister;
+import org.example.Server.serviceRegister.ServiceRegister;
+
+import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ServiceProvider {
     private Map<String, Object> interfaceProvider;
 
+    private ServiceRegister serviceRegister;
+
+    private String host;
+
+    private int port;
+
     // 初始化
-    public ServiceProvider() {
+    public ServiceProvider(String host, int port) {
         interfaceProvider = new HashMap<>();
+        serviceRegister = new ZKServiceRegister();
+        this.host = host;
+        this.port = port;
     }
 
 
@@ -19,6 +32,7 @@ public class ServiceProvider {
 
         for (Class<?> i : interfaces) {
             interfaceProvider.put(i.getName(), service);
+            serviceRegister.register(i.getName(), new InetSocketAddress(host, port));
         }
     }
 
