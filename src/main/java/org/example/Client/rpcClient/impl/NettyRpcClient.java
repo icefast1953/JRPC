@@ -24,7 +24,7 @@ public class NettyRpcClient implements RpcClient {
 
     static final private EventLoopGroup group;
 
-    public NettyRpcClient() {
+    public NettyRpcClient() throws InterruptedException {
         serviceCenter = new ZKServiceCenter();
     }
 

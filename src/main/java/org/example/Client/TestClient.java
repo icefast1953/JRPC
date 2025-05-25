@@ -5,7 +5,7 @@ import org.example.Common.pojo.User;
 import org.example.Common.service.UserService;
 
 public class TestClient {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ClientProxy proxy = new ClientProxy();
         UserService userService = proxy.getProxy(UserService.class);
         User byUserId = userService.getUserByUserId(1);

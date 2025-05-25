@@ -1,12 +1,16 @@
 package org.example.Common.rpc;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RPCReqeust implements Serializable {
     // 要请求的接口名称
     private String interfaceName;
