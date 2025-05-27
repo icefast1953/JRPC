@@ -9,5 +9,5 @@ public interface ServiceRegister {
      * @param serviceName
      * @param address
      */
-    void register(String serviceName, InetSocketAddress address);
+    void register(String serviceName, InetSocketAddress address, boolean canRetry);
 }

@@ -12,6 +12,8 @@ public class ZKServiceRegister implements ServiceRegister {
 
     private static final String ROOT_PATH = "MyRPC";
 
+    private static final String RETRY = "CanRetry";
+
     private  CuratorFramework client;
 
     public ZKServiceRegister() {
@@ -27,8 +29,12 @@ public class ZKServiceRegister implements ServiceRegister {
 
 
     @Override
-    public void register(String serviceName, InetSocketAddress address) {
+    public void register(String serviceName, InetSocketAddress address, boolean canRetry) {
         try {
+            if (canRetry) {
+                client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath("/" + RETRY + "/" + serviceName, serviceName.getBytes());
+            }
+
             if (client.checkExists().forPath("/" + serviceName) == null) {
                 client.create().creatingParentsIfNeeded().withMode(CreateMode.PERSISTENT).forPath( "/" + serviceName);
             }

@@ -1,5 +1,6 @@
 package org.example.Server.provider;
 
+import org.example.Server.ratelimit.provider.RateLimitProvider;
 import org.example.Server.serviceRegister.Impl.ZKServiceRegister;
 import org.example.Server.serviceRegister.ServiceRegister;
 
@@ -12,6 +13,8 @@ public class ServiceProvider {
 
     private ServiceRegister serviceRegister;
 
+    private RateLimitProvider rateLimitProvider;
+
     private String host;
 
     private int port;
@@ -20,24 +23,29 @@ public class ServiceProvider {
     public ServiceProvider(String host, int port) {
         interfaceProvider = new HashMap<>();
         serviceRegister = new ZKServiceRegister();
+        rateLimitProvider = new RateLimitProvider();
         this.host = host;
         this.port = port;
     }
 
 
-    public void provideServiceInterface(Object service) {
+    public void provideServiceInterface(Object service, boolean canRetry) {
         String serviceName = service.getClass().getName();
 
         Class<?>[] interfaces = service.getClass().getInterfaces();
 
         for (Class<?> i : interfaces) {
             interfaceProvider.put(i.getName(), service);
-            serviceRegister.register(i.getName(), new InetSocketAddress(host, port));
+            serviceRegister.register(i.getName(), new InetSocketAddress(host, port), canRetry);
         }
     }
 
     public Object getService(String interfaceName) {
+
         return interfaceProvider.get(interfaceName);
     }
 
+    public RateLimitProvider getRateLimitProvider() {
+        return rateLimitProvider;
+    }
 }

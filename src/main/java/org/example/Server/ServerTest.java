@@ -13,7 +13,7 @@ public class ServerTest {
 
         ServiceProvider serviceProvider = new ServiceProvider("localhost", 9999);
 
-        serviceProvider.provideServiceInterface(userService);
+        serviceProvider.provideServiceInterface(userService, true);
 
         RpcServer rpcServer = new NettyRPCServer(serviceProvider);
 

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.example.Common.rpc.RPCReqeust;
 import org.example.Common.rpc.RPCResponse;
 import org.example.Server.provider.ServiceProvider;
+import org.example.Server.ratelimit.RateLimit;
+import org.example.Server.ratelimit.provider.RateLimitProvider;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -39,6 +41,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RPCReqeust> 
         System.out.println("收到请求" + rpcReqeust);
 
         String interfaceName = rpcReqeust.getInterfaceName();
+
+//        RateLimit rateLimit = serviceProvider.getRateLimitProvider().getRateLimit(interfaceName);
+//
+//        if (!rateLimit.getToken()) {
+//            System.out.println("服务限流！！");
+//            return RPCResponse.failure();
+//        }
+
         // 获得服务对象
         Object service = serviceProvider.getService(interfaceName);
 
